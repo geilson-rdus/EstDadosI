@@ -41,7 +41,7 @@ int insere_lista_fim(Lista *lista, int x){
         }
         temp->seg = aux;
     }
-    return 1;
+    return 1;  
 }
 
 int insere_lista_inicio(Lista *lista, int x){
@@ -49,20 +49,68 @@ int insere_lista_inicio(Lista *lista, int x){
     cel * aux = (cel*)malloc(sizeof(cel));
     if(aux == NULL){ return 0; }
     aux->conteudo = x;
-    aux->seg = NULL;
+    aux->seg = *lista;
     
-    if((*lista)==NULL){//se a lista estiver vazia
-        *lista = aux;
-    }else{
-        cel *temp;
-        temp = *lista;
-        while(temp->seg != NULL){//anda até o fim da lista
-            temp = temp->seg;
-            aux->seg = temp;
-        }
-        
-    }
+    *lista = aux;
     return 1;
+}
+
+int buscar(Lista *lista, int x){
+    if(lista == NULL){ return 0; }
+    if(*lista == NULL){ return 0; }
+    
+    cel *temp;
+    temp = *lista;
+    
+    while(temp->seg != NULL){
+            if(temp->conteudo == x){
+                return 1;
+            }else{
+                temp = temp->seg;
+            }
+    }
+    return 0;
+}
+
+int buscarFor(Lista *lista, int x){
+    if(lista == NULL){ return 0; }
+    cel *aux;
+    for(aux = *lista;aux!=NULL;aux=aux->seg){
+        if(aux->conteudo == x){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int contar(Lista *lista){
+    if(lista == NULL){ return 0; }
+    if(*lista == NULL){ return 0; }
+    
+    cel *temp;
+    temp = *lista;
+    int contador = 0;
+    
+    while(temp->seg != NULL){
+        contador++;
+        temp = temp->seg;
+    }
+    
+    return ++contador;
+}
+
+void remover(Lista *lista, int x){
+    if(lista == NULL){ printf("Lista inexistente")}
+    cel *aux;
+    cel *inicio;
+    int contador = 0;
+    for(aux = *lista;aux!=NULL;aux=aux->seg){
+        if(aux->conteudo == x){
+            
+        }
+    }
+    
+    
 }
 
 void imprimir_lista(Lista* lista){
@@ -95,6 +143,9 @@ int main()
     insere_lista_fim(lst,5);
     
     imprimir_lista(lst);
+    
+    printf("\nBuscar: %d",buscar(lst,2));
+    printf("\nContagem: %d",contar(lst));
     
     return 0;
 }
