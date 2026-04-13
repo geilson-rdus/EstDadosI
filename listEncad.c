@@ -36,7 +36,7 @@ int insere_lista_fim(Lista *lista, int x){
     }else{
         cel *temp;
         temp = *lista;
-        while(temp->seg != NULL){//anda até o fim da lista
+        while(temp->seg != NULL){//anda atÃ© o fim da lista
             temp = temp->seg;
         }
         temp->seg = aux;
@@ -99,18 +99,29 @@ int contar(Lista *lista){
     return ++contador;
 }
 
-void remover(Lista *lista, int x){
-    if(lista == NULL){ printf("Lista inexistente")}
-    cel *aux;
-    cel *inicio;
-    int contador = 0;
-    for(aux = *lista;aux!=NULL;aux=aux->seg){
-        if(aux->conteudo == x){
-            
-        }
+int remover(Lista *lista, int x){
+    if(lista == NULL || *lista == NULL){
+        return 0;
+    }
+    cel *aux = *lista;
+    cel *ant = NULL;
+    
+    while(aux != NULL && aux->conteudo != x){
+        ant = aux;
+        aux = aux->seg;
     }
     
-    
+    if(aux == NULL){
+        return 0;
+    }
+
+    if(ant == NULL){
+        *lista = aux->seg;
+    }else{
+        ant->seg = aux->seg;
+    }
+    free(aux);
+    return 1;
 }
 
 void imprimir_lista(Lista* lista){
@@ -141,11 +152,16 @@ int main()
     insere_lista_fim(lst,3);
     insere_lista_fim(lst,4);
     insere_lista_fim(lst,5);
+    insere_lista_inicio(lst,6);
+    insere_lista_inicio(lst,0);
     
     imprimir_lista(lst);
     
-    printf("\nBuscar: %d",buscar(lst,2));
+    printf("\nBuscar: %d",buscar(lst,9));
     printf("\nContagem: %d",contar(lst));
+    
+    printf("\nRemover 3: %d\n", remover(lst, 3));
+    imprimir_lista(lst);
     
     return 0;
 }
