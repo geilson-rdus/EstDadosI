@@ -124,6 +124,23 @@ int remover(Lista *lista, int x){
     return 1;
 }
 
+int apagar_Lista(Lista *lista){
+    if(lista == NULL || *lista == NULL){
+        return 0;
+    }
+    cel *aux = *lista;
+    cel *temp;
+    
+    while(aux != NULL){
+        temp = aux;
+        aux = aux->seg;
+        free(temp);
+    }
+    
+    *lista = NULL;
+    return 1;
+}
+
 void imprimir_lista(Lista* lista){
     if(lista == NULL){
         printf("\nLista nao existe\n");
@@ -162,6 +179,10 @@ int main()
     
     printf("\nRemover 3: %d\n", remover(lst, 3));
     imprimir_lista(lst);
+    
+    printf("\nApagar Lista: %d\n", apagar_Lista(lst));
+    imprimir_lista(lst);
+    
     
     return 0;
 }
