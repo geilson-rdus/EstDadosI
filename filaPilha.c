@@ -18,12 +18,110 @@ struct fila{
 
 typedef struct fila Fila;
 
+Pilha* cria_pilha(){
+    Pilha *pi = (Pilha*) malloc (sizeof(Pilha));
+    if(pi != NULL){
+        *pi = NULL;
+    }
+    return pi;
+}
+
+void libera_pilha(Pilha* pilha){
+    if(pilha!=NULL){
+        Elem* aux;
+        while(*pilha!=NULL){
+            aux = *pilha;
+            *pilha = (*pilha)->prox;
+            free(aux);
+        }
+        free(pilha);
+    }
+}
+
+int consulta_topo(Pilha* pilha){
+    if(pilha==NULL){return -1;}
+    if((*pilha)==NULL){return -1;}
+    return (*pilha)->conteudo;
+}
+
+int push (Pilha *pi, int x){
+    if(pi==NULL){return -1;}
+    Elem* no = (Elem*) malloc (sizeof(Elem));
+    if(no==NULL){return -1;}
+    no->conteudo = x;
+    no->prox = (*pi);
+    *pi = no;
+    return 1;
+}
+
+int pop (Pilha* pi){
+    if(pi == NULL){return -1;}
+    if((*pi)==NULL){return -1;}
+
+    Elem *no = *pi;
+    *pi = no->prox;
+
+    int valor = no->conteudo;
+    free(no);
+
+    return 1;
+}
+
 Fila* cria_fila(){
     Fila *fi = (Fila*) malloc (sizeof(Fila));
     if(fi != NULL){
         fi->inicio = NULL;
+        fi->fim = NULL;
+        fi->qtd = 0;
     }
     return fi;
+}
+
+void libera_fila(Fila* fi){
+    if(fi!=NULL){
+        Elem* no;
+        while(fi->inicio!=NULL){
+            no = fi->inicio;
+            fi->inicio = fi->inicio->prox;
+            free(no);
+        }
+        free(fi);
+    }
+}
+
+int enqueue(Fila *fi, int x){
+    if(fi = NULL){return -1;}
+
+    Elem *no = (Elem*) malloc (sizeof(Elem));
+    if(no==NULL){ return -1; }
+    no->conteudo = x;
+    no->prox = NULL;
+
+    if(fi->inicio == NULL){
+        fi->inicio = no;
+    }
+
+    fi->fim->prox = no;
+    fi->qtd++;
+
+    return 1;
+}
+
+int dequeue(Fila* fi, int x){
+    if(fi == NULL){return -1;}
+    if(fi->inicio == NULL){return -1;}
+
+    Elem *no = fi->inicio;
+    fi->inicio = fi->inicio->prox; // fi->inicio = no->prox; errado
+
+    if(fi->inicio = NULL){
+        fi->fim = NULL;
+    }
+
+    free(no);
+    fi->qtd--;
+
+    return 1;
 }
 
 int insere_fila(Fila *fila, int x){
@@ -32,31 +130,31 @@ int insere_fila(Fila *fila, int x){
     if(aux == NULL){ return 0; }
     aux->conteudo = x;
     aux->prox = NULL;
-    
-    if((*fila)==NULL){
-        *fila = aux;
+
+    if((fila->inicio)==NULL){
+        fila->inicio = aux;
         fila->qtd++;
     }else{
         Elem *temp;
-        temp = *fila;
+        temp = fila->inicio;
         while(temp->prox != NULL){
             temp = temp->prox;
         }
         temp->prox = aux;
-        fila->qtd++;  
+        fila->qtd++;
     }
-    return 1;  
+    return 1;
 }
 
 void imprimir_fila(Fila* fila){
     if(fila == NULL){
         printf("\nFila nao existe\n");
     }else{
-        if(*fila == NULL){
+        if(fila->inicio == NULL){
             printf("\nFila vazia\n");
         }else{
             Elem *temp;
-            temp = *fila;
+            temp = fila->inicio ;
             while(temp != NULL){
                 printf("%d | ", temp->conteudo);
                 temp = temp->prox;
@@ -76,7 +174,7 @@ int main()
     insere_fila(fil,3);
     insere_fila(fil,4);
     insere_fila(fil,5);
-    
+
     imprimir_fila(fil);
 
     return 0;
