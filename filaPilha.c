@@ -71,7 +71,7 @@ Fila* cria_fila(){
     Fila *fi = (Fila*) malloc (sizeof(Fila));
     if(fi != NULL){
         fi->inicio = NULL;
-        fi->fim = NULL;
+        fi->final = NULL;
         fi->qtd = 0;
     }
     return fi;
@@ -101,7 +101,7 @@ int enqueue(Fila *fi, int x){
         fi->inicio = no;
     }
 
-    fi->fim->prox = no;
+    fi->final->prox = no;
     fi->qtd++;
 
     return 1;
@@ -115,34 +115,12 @@ int dequeue(Fila* fi, int x){
     fi->inicio = fi->inicio->prox; // fi->inicio = no->prox; errado
 
     if(fi->inicio = NULL){
-        fi->fim = NULL;
+        fi->final = NULL;
     }
 
     free(no);
     fi->qtd--;
 
-    return 1;
-}
-
-int insere_fila(Fila *fila, int x){
-    if(fila == NULL){ return 0; }
-    Elem * aux = (Elem*)malloc(sizeof(Elem));
-    if(aux == NULL){ return 0; }
-    aux->conteudo = x;
-    aux->prox = NULL;
-
-    if((fila->inicio)==NULL){
-        fila->inicio = aux;
-        fila->qtd++;
-    }else{
-        Elem *temp;
-        temp = fila->inicio;
-        while(temp->prox != NULL){
-            temp = temp->prox;
-        }
-        temp->prox = aux;
-        fila->qtd++;
-    }
     return 1;
 }
 
@@ -168,14 +146,13 @@ int main()
     printf("Inicio\n");
     Fila *fil;
     fil = cria_fila();
+    int retorno;
 
-    insere_fila(fil,1);
-    insere_fila(fil,2);
-    insere_fila(fil,3);
-    insere_fila(fil,4);
-    insere_fila(fil,5);
+    retorno = enqueue(fil,1);
+    retorno = enqueue(fil,2);
 
     imprimir_fila(fil);
+    
 
     return 0;
 }
