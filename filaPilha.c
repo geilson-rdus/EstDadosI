@@ -90,20 +90,23 @@ void libera_fila(Fila* fi){
 }
 
 int enqueue(Fila *fi, int x){
-    if(fi = NULL){return -1;}
+    if(fi == NULL){return -1;}
 
-    Elem *no = (Elem*) malloc (sizeof(Elem));
-    if(no==NULL){ return -1; }
+    Elem *no = (Elem*) malloc(sizeof(Elem));
+    if(no == NULL){ return -1; }
+
     no->conteudo = x;
     no->prox = NULL;
 
     if(fi->inicio == NULL){
         fi->inicio = no;
+        fi->final = no;
+    } else {
+        fi->final->prox = no;
+        fi->final = no;
     }
 
-    fi->final->prox = no;
     fi->qtd++;
-
     return 1;
 }
 
@@ -114,7 +117,7 @@ int dequeue(Fila* fi, int x){
     Elem *no = fi->inicio;
     fi->inicio = fi->inicio->prox; // fi->inicio = no->prox; errado
 
-    if(fi->inicio = NULL){
+    if(fi->inicio == NULL){
         fi->final = NULL;
     }
 
