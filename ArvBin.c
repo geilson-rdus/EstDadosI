@@ -37,6 +37,12 @@ int insere_ArvBin(ArvBin *raiz, int valor){
     NO *temp;
     temp = *raiz;
     while(1){
+        
+        if(valor == temp->info){
+            free(aux);
+            return 0;
+        }
+        
         if(valor < temp->info){
             if(temp->esq == NULL){
                 temp->esq = aux;
@@ -92,7 +98,13 @@ int altura_ArvBin(ArvBin* raiz){
 }
 
 int totalNosArvBin(ArvBin* raiz){
-  return 1;
+  if(raiz == NULL){return 0;}
+  if(*raiz == NULL){return 0;}
+  
+  int nos_esq = totalNosArvBin(&((*raiz)->esq));
+  int nos_dir = totalNosArvBin(&((*raiz)->dir));
+  
+  return nos_esq + nos_dir + 1;
 }
 
 void preOrdem_arvBin(ArvBin *raiz){
@@ -108,7 +120,19 @@ void posOrdem_arvBin(ArvBin *raiz){
 }
 
 int consulta_ArvBin(ArvBin *raiz, int valor){
-  return 1;
+    if(raiz == NULL){return 0;}
+    if(*raiz == NULL){return 0;}
+    else{
+        NO *atual = *raiz;
+        while(atual!=NULL){
+            if(valor == atual->info){return 1;}
+            if(valor>atual->info){atual = atual->dir;
+            }else{atual = atual->esq;}
+        }
+    }
+    
+    return 0;
+    
 }
 
 
@@ -119,6 +143,10 @@ int main()
     for(int i=0;i<N;i++){
         insere_ArvBin(raiz, dados[i]);
     }
+    
+    int x = consulta_ArvBin(raiz,21);
+    
+    printf("%d\n",x);
     
     imprime_ArvBin(raiz);
     return 0;
